@@ -13,6 +13,7 @@ using StackUnderflow.Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackUnderflow.Data;
+using StackUnderflow.Business;
 
 namespace StackUnderflow.Web
 {
@@ -41,6 +42,7 @@ namespace StackUnderflow.Web
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient<QuestionsService>();
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 

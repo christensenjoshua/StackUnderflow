@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\StackUnderflow.Business\StackUnderflow.Business.csproj" />
     <ProjectReference Include="..\StackUnderflow.Data\StackUnderflow.Data.csproj" />
   </ItemGroup>
 
