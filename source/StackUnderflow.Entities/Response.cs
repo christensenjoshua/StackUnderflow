@@ -6,7 +6,7 @@ using System.Text;
 
 namespace StackUnderflow.Entities
 {
-    public class ResponseComment
+    public class ResponseComments
     {
         public int Id { get; set; }
         public int ResponseId { get; set; }
@@ -27,6 +27,6 @@ namespace StackUnderflow.Entities
         public int Popularity { get; set; }
         public bool IsSolution { get; set; }
 
-        public virtual ICollection<ResponseComment> ResponseComments { get; set; }
+        public virtual ICollection<ResponseComments> ResponseComments { get; set; }
     }
 }
