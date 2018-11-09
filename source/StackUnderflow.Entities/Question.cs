@@ -26,6 +26,7 @@ namespace StackUnderflow.Entities
         public string Title { get; set; }
         public string Body { get; set; }
         public string UserId { get; set; }
+        public int Popularity { get; set; }
 
         public virtual ICollection<QuestionResponses> QuestionResponses { get; set; }
     }
@@ -37,6 +38,7 @@ namespace StackUnderflow.Entities
         public string Title { get; set; }
         public string Body { get; set; }
         public string UserId { get; set; }
+        public int Popularity { get; set; }
 
         public virtual ICollection<Response> Responses { get; set; }
     }
