@@ -37,8 +37,16 @@ namespace StackUnderflow.Web.Controllers
             {
                 return NotFound();
             }
-
-            return View(question);
+            var qResponses = _service.GetRelatedResponses(id);
+            var viewQuestion = new QuestionForView
+            {
+                Id = question.Id,
+                Title = question.Title,
+                Body = question.Body,
+                UserId = question.UserId,
+                Responses = qResponses
+            };
+            return View(viewQuestion);
         }
 
         // GET: Questions/Create

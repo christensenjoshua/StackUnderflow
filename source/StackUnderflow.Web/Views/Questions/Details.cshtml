@@ -1,4 +1,5 @@
-﻿@model StackUnderflow.Entities.Question
+﻿using StackUnderflowEntities.Response
+@model StackUnderflow.Entities.QuestionForView
 
 @{
     ViewData["Title"] = "Details";
@@ -33,4 +34,12 @@
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
+</div>
+<div>
+    @foreach(var response in Model.Responses)
+    {
+        <h4>
+            @Html.DisplayFor(modelItem => response.Body)
+        </h4>
+    }
 </div>

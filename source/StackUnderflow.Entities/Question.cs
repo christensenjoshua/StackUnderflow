@@ -29,4 +29,15 @@ namespace StackUnderflow.Entities
 
         public virtual ICollection<QuestionResponses> QuestionResponses { get; set; }
     }
+
+    public class QuestionForView
+    {
+        public int Id { get; set; }
+        [Required]
+        public string Title { get; set; }
+        public string Body { get; set; }
+        public string UserId { get; set; }
+
+        public virtual ICollection<Response> Responses { get; set; }
+    }
 }

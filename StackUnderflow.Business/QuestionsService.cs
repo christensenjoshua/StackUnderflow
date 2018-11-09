@@ -58,5 +58,13 @@ namespace StackUnderflow.Business
         {
             return _ctx.Questions.Any(q => q.Id == id);
         }
+
+        public List<Response> GetRelatedResponses(int qId)
+        {
+            return _ctx.QuestionResponses
+                .Where(x => x.QuestionId == qId)
+                .Select(g => g.Response)
+                .ToList();
+        }
     }
 }
