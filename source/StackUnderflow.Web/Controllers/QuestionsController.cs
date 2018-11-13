@@ -107,8 +107,15 @@ namespace StackUnderflow.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                _service.UpdateQuestion(question, _um.GetUserAsync(HttpContext.User).Result.Id);
-                return RedirectToAction(nameof(Index));
+                try
+                {
+
+                    _service.UpdateQuestion(question, _um.GetUserAsync(HttpContext.User).Result.Id);
+                    return RedirectToAction(nameof(Index));
+                }catch(Exception ex)
+                {
+                    return View("CustomError", new CustomErrorModel { Text = ex.Message });
+                }
             }
             return View(question);
         }
@@ -132,8 +139,14 @@ namespace StackUnderflow.Web.Controllers
         [Authorize]
         public IActionResult DeleteConfirmed(int id)
         {
-            var question = _service.DeleteQuestion(id, _um.GetUserAsync(HttpContext.User).Result.Id);
-            return RedirectToAction(nameof(Index));
+            try {
+                _service.DeleteQuestion(id, _um.GetUserAsync(HttpContext.User).Result.Id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch(Exception ex)
+            {
+                return View("CustomError", new CustomErrorModel { Text = ex.Message});
+            }
         }
         // POST: New Response on Question
         [HttpPost, ActionName("AddResponse")]
