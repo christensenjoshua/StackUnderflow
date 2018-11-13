@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -123,6 +124,58 @@ namespace StackUnderflow.Web.Controllers
         {
             var question = _service.DeleteQuestion(id);
             return RedirectToAction(nameof(Index));
+        }
+        // POST: New Response on Question
+        [HttpPost, ActionName("AddResponse")]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddResponse([FromForm] NewResponse rData)
+        {
+            var user = _um.GetUserAsync(HttpContext.User).Result;
+            Response newResponse = new Response
+            {
+                Body = rData.Body,
+                UserId = user.Id,
+                Popularity = 0,
+                IsSolution = false
+            };
+            _service.CreateResponse(newResponse, rData.QuestionId);
+            var origQ = _service.GetQuestionById(rData.QuestionId);
+            var qResponses = _service.GetRelatedResponses(origQ.Id);
+            var viewQuestion = new QuestionForView
+            {
+                Id = origQ.Id,
+                Title = origQ.Title,
+                Body = origQ.Body,
+                UserId = origQ.UserId,
+                Responses = qResponses
+            };
+            return View("Details", viewQuestion);
+        }
+
+        // POST: New Response on Question
+        [HttpPost, ActionName("AddComment")]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddComment([FromForm] NewComment cData)
+        {
+            var user = _um.GetUserAsync(HttpContext.User).Result;
+            Comment newResponse = new Comment
+            {
+                Body = cData.Body,
+                UserId = user.Id,
+                Popularity = 0,
+            };
+            _service.CreateComment(newResponse, cData.ResponseId);
+            var origQ = _service.GetQuestionById(cData.QuestionId);
+            var qResponses = _service.GetRelatedResponses(origQ.Id);
+            var viewQuestion = new QuestionForView
+            {
+                Id = origQ.Id,
+                Title = origQ.Title,
+                Body = origQ.Body,
+                UserId = origQ.UserId,
+                Responses = qResponses
+            };
+            return View("Details", viewQuestion);
         }
 
         //private bool QuestionExists(int id)

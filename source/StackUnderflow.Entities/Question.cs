@@ -40,6 +40,6 @@ namespace StackUnderflow.Entities
         public string UserId { get; set; }
         public int Popularity { get; set; }
 
-        public virtual ICollection<Response> Responses { get; set; }
+        public virtual ICollection<ResponseForView> Responses { get; set; }
     }
 }

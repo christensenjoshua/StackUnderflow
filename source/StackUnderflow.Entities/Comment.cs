@@ -11,4 +11,11 @@ namespace StackUnderflow.Entities
         public string UserId { get; set; }
         public int Popularity { get; set; }
     }
+
+    public class NewComment
+    {
+        public string Body { get; set; }
+        public int ResponseId { get; set; }
+        public int QuestionId { get; set; }
+    }
 }

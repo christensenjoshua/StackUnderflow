@@ -59,12 +59,58 @@ namespace StackUnderflow.Business
             return _ctx.Questions.Any(q => q.Id == id);
         }
 
-        public List<Response> GetRelatedResponses(int qId)
+        public List<ResponseForView> GetRelatedResponses(int qId)
         {
-            return _ctx.QuestionResponses
+            List <ResponseForView> newItems = new List<ResponseForView>();
+            List<Response> tmpResponses = _ctx.QuestionResponses
                 .Where(x => x.QuestionId == qId)
                 .Select(g => g.Response)
                 .ToList();
+            foreach(Response item in tmpResponses)
+            {
+                newItems.Add(new ResponseForView
+                {
+                    Id = item.Id,
+                    Body = item.Body,
+                    UserId = item.UserId,
+                    Popularity = item.Popularity,
+                    IsSolution = item.IsSolution,
+                    Comments = GetRelatedComments(item.Id)
+                });
+            }
+            return newItems;
+        }
+
+        public List<Comment> GetRelatedComments(int rId)
+        {
+            return _ctx.ResponseComments
+                .Where(x => x.ResponseId == rId)
+                .Select(y => y.Comment)
+                .ToList();
+        }
+
+        public void CreateResponse(Response r, int qId)
+        {
+            _ctx.Responses.Add(r);
+            QuestionResponses xRef = new QuestionResponses
+            {
+                ResponseId = r.Id,
+                QuestionId = qId
+            };
+            _ctx.QuestionResponses.Add(xRef);
+            _ctx.SaveChanges();
+        }
+
+        public void CreateComment(Comment c, int rId)
+        {
+            _ctx.Comments.Add(c);
+            ResponseComments xRef = new ResponseComments
+            {
+                CommentId = c.Id,
+                ResponseId = rId
+            };
+            _ctx.ResponseComments.Add(xRef);
+            _ctx.SaveChanges();
         }
     }
 }

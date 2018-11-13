@@ -29,4 +29,22 @@ namespace StackUnderflow.Entities
 
         public virtual ICollection<ResponseComments> ResponseComments { get; set; }
     }
+
+    public class ResponseForView
+    {
+        public int Id { get; set; }
+        [Required]
+        public string Body { get; set; }
+        public string UserId { get; set; }
+        public int Popularity { get; set; }
+        public bool IsSolution { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; }
+    }
+
+    public class NewResponse
+    {
+        public string Body { get; set; }
+        public int QuestionId { get; set; }
+    }
 }

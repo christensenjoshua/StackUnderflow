@@ -34,11 +34,40 @@
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
-<div>
-    @foreach(var response in Model.Responses)
+<hr />
+<div style="padding-left:15px; border-left:2px solid black;">
+    @foreach (var response in Model.Responses)
     {
-        <h4>
+        <p>
+            Popularity: @Html.DisplayFor(modelItem => response.Popularity)
+        </p>
+        <p>
             @Html.DisplayFor(modelItem => response.Body)
-        </h4>
+        </p>
+        <br />
+            foreach (var comment in response.Comments)
+            {
+            <p style="padding-left:15px; border-left:1px solid black;">
+                Popularity: @Html.DisplayFor(commentItem => comment.Popularity)
+            </p>
+            <p style="padding-left:15px; border-left:1px solid black;">
+                @Html.DisplayFor(commentItem => comment.Body)
+            </p>
+            <br />
+            }
+            <form asp-action="AddComment" style="padding-left:15px; border-left:1px solid black;">
+                <input type="hidden" name="ResponseId" id="ResponseId" value="@response.Id" />
+                <input type="hidden" name="QuestionId" id="QuestionId" value="@Model.Id" />
+                <label for="Body">Add Your Thoughts</label>
+                <input type="text" id="Body" name="Body" />
+                <input type="submit" value="Post" class="btn btn-default" />
+            </form>
+            <hr />
     }
+    <form asp-action="AddResponse">
+        <input type="hidden" name="QuestionId" id="QuestionId" value="@Model.Id" />
+        <label for="Body">Add a Solution</label>
+        <input type="text" id="Body" name="Body" />
+        <input type="submit" value="Post" class="btn btn-default" />
+    </form>
 </div>
