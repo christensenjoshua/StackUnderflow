@@ -97,7 +97,7 @@ namespace StackUnderflow.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public IActionResult Edit([Bind("Id,Title,Body,UserId")] Question question)
+        public IActionResult Edit([Bind("Id,Title,Body,Popularity,UserId")] Question question)
         {
             if (ModelState.IsValid)
             {
