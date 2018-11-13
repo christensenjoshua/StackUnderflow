@@ -28,6 +28,27 @@
         <dd>
             @Html.DisplayFor(model => model.UserId)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Popularity)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Popularity)
+        </dd>
+        <dt>
+            Make Your Voice Heard!
+        </dt>
+        <dd>
+            <form asp-action="VoteQuestion">
+                <input type="hidden" name="QuestionId" id="UpTheQuestion" value="@Model.Id" />
+                <input type="hidden" name="Value" id="UpValue" value="1" />
+                <input type="submit" value="UpVote" class="btn btn-default btn-sm" />
+            </form>
+            <form asp-action="VoteQuestion">
+                <input type="hidden" name="QuestionId" id="DownTheQuestion" value="@Model.Id" />
+                <input type="hidden" name="Value" id="UpValue" value="-1" />
+                <input type="submit" value="DownVote" class="btn btn-default btn-sm" />
+            </form>
+        </dd>
     </dl>
 </div>
 <div>
@@ -38,9 +59,21 @@
 <div style="padding-left:15px; border-left:2px solid black;">
     @foreach (var response in Model.Responses)
     {
-        <p>
-            Popularity: @Html.DisplayFor(modelItem => response.Popularity)
-        </p>
+    <p>
+        Popularity: @Html.DisplayFor(modelItem => response.Popularity)
+        <form asp-action="VoteResponse">
+            <input type="hidden" name="ResponseId" id="UpResponseId" value="@response.Id" />
+            <input type="hidden" name="QuestionId" id="UpQuestionId" value="@Model.Id" />
+            <input type="hidden" name="Value" id="UpValue" value="1" />
+            <input type="submit" value="UpVote" class="btn btn-default btn-xs" />
+        </form>
+        <form asp-action="VoteResponse">
+            <input type="hidden" name="ResponseId" id="DownResponseId" value="@response.Id" />
+            <input type="hidden" name="QuestionId" id="DownQuestionId" value="@Model.Id" />
+            <input type="hidden" name="Value" id="UpValue" value="-1" />
+            <input type="submit" value="DownVote" class="btn btn-default btn-xs" />
+        </form>
+    </p>
         <p>
             @Html.DisplayFor(modelItem => response.Body)
         </p>
@@ -48,12 +81,9 @@
             foreach (var comment in response.Comments)
             {
             <p style="padding-left:15px; border-left:1px solid black;">
-                Popularity: @Html.DisplayFor(commentItem => comment.Popularity)
-            </p>
-            <p style="padding-left:15px; border-left:1px solid black;">
                 @Html.DisplayFor(commentItem => comment.Body)
             </p>
-            <br />
+            <hr />
             }
             <form asp-action="AddComment" style="padding-left:15px; border-left:1px solid black;">
                 <input type="hidden" name="ResponseId" id="ResponseId" value="@response.Id" />

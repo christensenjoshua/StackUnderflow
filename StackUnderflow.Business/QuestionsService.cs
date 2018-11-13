@@ -112,5 +112,21 @@ namespace StackUnderflow.Business
             _ctx.ResponseComments.Add(xRef);
             _ctx.SaveChanges();
         }
+
+        public void VoteOnResponse(VoteResponse v)
+        {
+            Response r = _ctx.Responses.FirstOrDefault(x => x.Id == v.ResponseId);
+            r.Popularity += v.Value;
+            _ctx.Responses.Update(r);
+            _ctx.SaveChanges();
+        }
+
+        public void VoteOnQuestion(VoteQuestion v)
+        {
+            Question q = _ctx.Questions.FirstOrDefault(x => x.Id == v.QuestionId);
+            q.Popularity += v.Value;
+            _ctx.Questions.Update(q);
+            _ctx.SaveChanges();
+        }
     }
 }

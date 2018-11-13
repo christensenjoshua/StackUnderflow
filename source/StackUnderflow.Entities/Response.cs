@@ -47,4 +47,11 @@ namespace StackUnderflow.Entities
         public string Body { get; set; }
         public int QuestionId { get; set; }
     }
+
+    public class VoteResponse
+    {
+        public int QuestionId { get; set; }
+        public int ResponseId { get; set; }
+        public int Value { get; set; }
+    }
 }

@@ -45,6 +45,7 @@ namespace StackUnderflow.Web.Controllers
                 Title = question.Title,
                 Body = question.Body,
                 UserId = question.UserId,
+                Popularity = question.Popularity,
                 Responses = qResponses
             };
             return View(viewQuestion);
@@ -147,6 +148,7 @@ namespace StackUnderflow.Web.Controllers
                 Title = origQ.Title,
                 Body = origQ.Body,
                 UserId = origQ.UserId,
+                Popularity = origQ.Popularity,
                 Responses = qResponses
             };
             return View("Details", viewQuestion);
@@ -173,6 +175,45 @@ namespace StackUnderflow.Web.Controllers
                 Title = origQ.Title,
                 Body = origQ.Body,
                 UserId = origQ.UserId,
+                Popularity = origQ.Popularity,
+                Responses = qResponses
+            };
+            return View("Details", viewQuestion);
+        }
+
+        [HttpPost, ActionName("VoteResponse")]
+        [ValidateAntiForgeryToken]
+        public IActionResult VoteResponse([FromForm] VoteResponse r)
+        {
+            _service.VoteOnResponse(r);
+            var origQ = _service.GetQuestionById(r.QuestionId);
+            var qResponses = _service.GetRelatedResponses(origQ.Id);
+            var viewQuestion = new QuestionForView
+            {
+                Id = origQ.Id,
+                Title = origQ.Title,
+                Body = origQ.Body,
+                UserId = origQ.UserId,
+                Popularity = origQ.Popularity,
+                Responses = qResponses
+            };
+            return View("Details", viewQuestion);
+        }
+
+        [HttpPost, ActionName("VoteQuestion")]
+        [ValidateAntiForgeryToken]
+        public IActionResult VoteQuestion([FromForm] VoteQuestion r)
+        {
+            _service.VoteOnQuestion(r);
+            var origQ = _service.GetQuestionById(r.QuestionId);
+            var qResponses = _service.GetRelatedResponses(origQ.Id);
+            var viewQuestion = new QuestionForView
+            {
+                Id = origQ.Id,
+                Title = origQ.Title,
+                Body = origQ.Body,
+                UserId = origQ.UserId,
+                Popularity = origQ.Popularity,
                 Responses = qResponses
             };
             return View("Details", viewQuestion);

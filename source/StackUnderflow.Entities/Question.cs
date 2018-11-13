@@ -42,4 +42,10 @@ namespace StackUnderflow.Entities
 
         public virtual ICollection<ResponseForView> Responses { get; set; }
     }
+
+    public class VoteQuestion
+    {
+        public int QuestionId { get; set; }
+        public int Value { get; set; }
+    }
 }
