@@ -132,7 +132,7 @@ namespace StackUnderflow.Web.Controllers
         [Authorize]
         public IActionResult DeleteConfirmed(int id)
         {
-            var question = _service.DeleteQuestion(id);
+            var question = _service.DeleteQuestion(id, _um.GetUserAsync(HttpContext.User).Result.Id);
             return RedirectToAction(nameof(Index));
         }
         // POST: New Response on Question

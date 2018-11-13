@@ -53,13 +53,17 @@ namespace StackUnderflow.Business
             throw new Exception("You are not the owner of this question!");
         }
 
-        public Question DeleteQuestion(int id)
+        public Question DeleteQuestion(int id, string userId)
         {
             //need to check deleting user vs user on question.
-            var q = GetQuestionById(id);
-            _ctx.Remove(q);
-            _ctx.SaveChanges();
-            return q;
+            Question origQ = GetQuestionById(id);
+            if (origQ.UserId == userId)
+            {
+                _ctx.Remove(origQ);
+                _ctx.SaveChanges();
+                return origQ;
+            }
+            throw new Exception("You are not the owner of this question!");
         }
 
         public bool QuestionExists(int id)
