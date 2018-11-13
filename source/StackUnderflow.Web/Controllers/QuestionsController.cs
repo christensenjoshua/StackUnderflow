@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -25,12 +26,14 @@ namespace StackUnderflow.Web.Controllers
         }
 
         // GET: Questions
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View(_service.GetAllQuestions());
         }
 
         // GET: Questions/Details/5
+        [Authorize]
         public IActionResult Details(int id)
         {
             var question = _service.GetQuestionById(id);
@@ -52,6 +55,7 @@ namespace StackUnderflow.Web.Controllers
         }
 
         // GET: Questions/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -62,6 +66,7 @@ namespace StackUnderflow.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public IActionResult Create([Bind("Id,Title,Body,UserId")] Question question)
         {
             var user = _um.GetUserAsync(HttpContext.User).Result;
@@ -75,6 +80,7 @@ namespace StackUnderflow.Web.Controllers
         }
 
         // GET: Questions/Edit/5
+        [Authorize]
         public IActionResult Edit(int id)
         {
             var question = _service.GetQuestionById(id);
@@ -90,6 +96,7 @@ namespace StackUnderflow.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public IActionResult Edit(int id, [Bind("Id,Title,Body,UserId")] Question question)
         {
 
@@ -107,6 +114,7 @@ namespace StackUnderflow.Web.Controllers
         }
 
         // GET: Questions/Delete/5
+        [Authorize]
         public IActionResult Delete(int id)
         {
             var question = _service.GetQuestionById(id);
@@ -121,6 +129,7 @@ namespace StackUnderflow.Web.Controllers
         // POST: Questions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public IActionResult DeleteConfirmed(int id)
         {
             var question = _service.DeleteQuestion(id);
@@ -129,6 +138,7 @@ namespace StackUnderflow.Web.Controllers
         // POST: New Response on Question
         [HttpPost, ActionName("AddResponse")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public IActionResult AddResponse([FromForm] NewResponse rData)
         {
             var user = _um.GetUserAsync(HttpContext.User).Result;
@@ -157,6 +167,7 @@ namespace StackUnderflow.Web.Controllers
         // POST: New Response on Question
         [HttpPost, ActionName("AddComment")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public IActionResult AddComment([FromForm] NewComment cData)
         {
             var user = _um.GetUserAsync(HttpContext.User).Result;
@@ -183,6 +194,7 @@ namespace StackUnderflow.Web.Controllers
 
         [HttpPost, ActionName("VoteResponse")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public IActionResult VoteResponse([FromForm] VoteResponse r)
         {
             _service.VoteOnResponse(r);
@@ -202,6 +214,7 @@ namespace StackUnderflow.Web.Controllers
 
         [HttpPost, ActionName("VoteQuestion")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public IActionResult VoteQuestion([FromForm] VoteQuestion r)
         {
             _service.VoteOnQuestion(r);
@@ -221,6 +234,7 @@ namespace StackUnderflow.Web.Controllers
 
         [HttpPost, ActionName("MarkSolution")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public IActionResult MarkSolution([FromForm] VoteResponse r)
         {
             _service.MarkSolution(r.ResponseId);
