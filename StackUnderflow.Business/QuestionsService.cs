@@ -128,5 +128,13 @@ namespace StackUnderflow.Business
             _ctx.Questions.Update(q);
             _ctx.SaveChanges();
         }
+
+        public void MarkSolution(int rId)
+        {
+            Response r = _ctx.Responses.FirstOrDefault(x => x.Id == rId);
+            r.IsSolution = true;
+            _ctx.Responses.Update(r);
+            _ctx.SaveChanges();
+        }
     }
 }

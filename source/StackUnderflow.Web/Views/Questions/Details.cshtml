@@ -59,6 +59,19 @@
 <div style="padding-left:15px; border-left:2px solid black;">
     @foreach (var response in Model.Responses)
     {
+        if (response.IsSolution)
+        {
+            <h5 style="color:white; background-color:green;">Solution!</h5>
+        }
+        else
+        {
+            <form asp-action="MarkSolution">
+                <input type="hidden" name="ResponseId" id="SolResponseId" value="@response.Id" />
+                <input type="hidden" name="QuestionId" id="SolQuestionId" value="@Model.Id" />
+                <input type="hidden" name="Value" id="UpValue" value="0" />
+                <input type="submit" value="Mark as Solution" class="btn btn-default btn-xs btn-success" />
+            </form>
+        }
     <p>
         Popularity: @Html.DisplayFor(modelItem => response.Popularity)
         <form asp-action="VoteResponse">
@@ -80,10 +93,10 @@
         <br />
             foreach (var comment in response.Comments)
             {
-            <p style="padding-left:15px; border-left:1px solid black;">
-                @Html.DisplayFor(commentItem => comment.Body)
-            </p>
-            <hr />
+                <p style="padding-left:15px; border-left:1px solid black;">
+                    @Html.DisplayFor(commentItem => comment.Body)
+                </p>
+                <hr />
             }
             <form asp-action="AddComment" style="padding-left:15px; border-left:1px solid black;">
                 <input type="hidden" name="ResponseId" id="ResponseId" value="@response.Id" />

@@ -219,6 +219,25 @@ namespace StackUnderflow.Web.Controllers
             return View("Details", viewQuestion);
         }
 
+        [HttpPost, ActionName("MarkSolution")]
+        [ValidateAntiForgeryToken]
+        public IActionResult MarkSolution([FromForm] VoteResponse r)
+        {
+            _service.MarkSolution(r.ResponseId);
+            var origQ = _service.GetQuestionById(r.QuestionId);
+            var qResponses = _service.GetRelatedResponses(origQ.Id);
+            var viewQuestion = new QuestionForView
+            {
+                Id = origQ.Id,
+                Title = origQ.Title,
+                Body = origQ.Body,
+                UserId = origQ.UserId,
+                Popularity = origQ.Popularity,
+                Responses = qResponses
+            };
+            return View("Details", viewQuestion);
+        }
+
         //private bool QuestionExists(int id)
         //{
         //    return _context.Questions.Any(e => e.Id == id);
