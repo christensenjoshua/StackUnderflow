@@ -97,19 +97,12 @@ namespace StackUnderflow.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public IActionResult Edit(int id, [Bind("Id,Title,Body,UserId")] Question question)
+        public IActionResult Edit([Bind("Id,Title,Body,UserId")] Question question)
         {
-
-            if (id != question.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
                 {
-
                     _service.UpdateQuestion(question, _um.GetUserAsync(HttpContext.User).Result.Id);
                     return RedirectToAction(nameof(Index));
                 }catch(Exception ex)

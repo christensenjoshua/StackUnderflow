@@ -39,16 +39,12 @@ namespace StackUnderflow.Business
             if(origQ.UserId == userId)
             {
                 // everything is okay!
-                try
-                {
-                    _ctx.Questions.Update(q);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    throw;
-                }
+                origQ.Title = q.Title;
+                origQ.Body = q.Body;
+                origQ.Popularity = q.Popularity;
+                _ctx.Questions.Update(origQ);
                 _ctx.SaveChanges();
-                return GetQuestionById(q.Id);
+                return q;
             }
             throw new Exception("You are not the owner of this question!");
         }
