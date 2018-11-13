@@ -107,7 +107,7 @@ namespace StackUnderflow.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                _service.UpdateQuestion(question);
+                _service.UpdateQuestion(question, _um.GetUserAsync(HttpContext.User).Result.Id);
                 return RedirectToAction(nameof(Index));
             }
             return View(question);

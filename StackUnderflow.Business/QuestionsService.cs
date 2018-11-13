@@ -18,7 +18,7 @@ namespace StackUnderflow.Business
 
         public List<Question> GetAllQuestions()
         {
-            return _ctx.Questions.ToList();
+            return _ctx.Questions.OrderByDescending(x=>x.Popularity).ToList();
         }
 
         public Question GetQuestionById(int id)
@@ -32,22 +32,30 @@ namespace StackUnderflow.Business
             _ctx.SaveChanges();
         }
 
-        public Question UpdateQuestion(Question q)
+        public Question UpdateQuestion(Question q, string userId)
         {
-            try
+            //need to check updating user vs current user
+            Question origQ = GetQuestionById(q.Id);
+            if(origQ.UserId == userId)
             {
-                _ctx.Questions.Update(q);
+                // everything is okay!
+                try
+                {
+                    _ctx.Questions.Update(q);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
+                }
+                _ctx.SaveChanges();
+                return GetQuestionById(q.Id);
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw;
-            }
-            _ctx.SaveChanges();
-            return GetQuestionById(q.Id);
+            throw new Exception("You are not the owner of this question!");
         }
 
         public Question DeleteQuestion(int id)
         {
+            //need to check deleting user vs user on question.
             var q = GetQuestionById(id);
             _ctx.Remove(q);
             _ctx.SaveChanges();
@@ -64,7 +72,8 @@ namespace StackUnderflow.Business
             List <ResponseForView> newItems = new List<ResponseForView>();
             List<Response> tmpResponses = _ctx.QuestionResponses
                 .Where(x => x.QuestionId == qId)
-                .Select(g => g.Response)
+                .Select(x => x.Response)
+                .OrderByDescending(x => x.Popularity)
                 .ToList();
             foreach(Response item in tmpResponses)
             {
@@ -85,7 +94,8 @@ namespace StackUnderflow.Business
         {
             return _ctx.ResponseComments
                 .Where(x => x.ResponseId == rId)
-                .Select(y => y.Comment)
+                .Select(x => x.Comment)
+                .OrderByDescending(x => x.Popularity)
                 .ToList();
         }
 
